@@ -3,31 +3,35 @@ require AOCUtils
 defmodule DAY01 do
   @path './files/input01.txt'
 
-  defp checkIncreased(item, acc) do
+  defp check_increased(item, acc) do
     {accItem, accCounter} = acc
     incremente = if item > accItem, do: 1, else: 0
     {item, accCounter + incremente}
   end
 
-  defp mainPart1(measurements) do
+  defp count_increased(measurements) do
     {_, increased} =
       measurements
-      |> Enum.reduce({nil, 0}, fn item, acc -> checkIncreased(item, acc) end)
+      |> Enum.reduce({nil, 0}, &check_increased/2)
 
     increased
   end
 
-  defp mainPart2(measurements) do
+  defp count_increased_sum_of_three(measurements) do
     measurements
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.chunk_every(3, 1)
+    |> Enum.map(&Enum.sum/1)
+    |> count_increased
   end
 
   def solution1 do
     AOCUtils.readInputFile(@path)
-    |> mainPart1
+    |> count_increased
   end
 
   def solution2 do
     AOCUtils.readInputFile(@path)
-    |> mainPart2
+    |> count_increased_sum_of_three
   end
 end
