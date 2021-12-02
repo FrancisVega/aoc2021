@@ -3,26 +3,31 @@ require AOCUtils
 defmodule DAY01 do
   @path './files/input01.txt'
 
-  defp isGreater(a, b) do
-    a > b
-  end
-
-  defp addCounter(item, acc) do
+  defp checkIncreased(item, acc) do
     {accItem, accCounter} = acc
-    currentItemIsGreater = isGreater(item, accItem)
-
-    if currentItemIsGreater do
-      {item, accCounter + 1}
-    else
-      {item, accCounter}
-    end
+    incremente = if item > accItem, do: 1, else: 0
+    {item, accCounter + incremente}
   end
 
-  def solution do
-    {_, output} =
-      AOCUtils.readInputFile(@path)
-      |> Enum.reduce({nil, 0}, fn item, acc -> addCounter(item, acc) end)
+  defp mainPart1(measurements) do
+    {_, increased} =
+      measurements
+      |> Enum.reduce({nil, 0}, fn item, acc -> checkIncreased(item, acc) end)
 
-    output
+    increased
+  end
+
+  defp mainPart2(measurements) do
+    measurements
+  end
+
+  def solution1 do
+    AOCUtils.readInputFile(@path)
+    |> mainPart1
+  end
+
+  def solution2 do
+    AOCUtils.readInputFile(@path)
+    |> mainPart2
   end
 end
