@@ -3,10 +3,6 @@ require AOCUtils
 defmodule Day01 do
   @path './files/input01.txt'
 
-  defp remove_falsy_items(x) do
-    Enum.count(x) > 1
-  end
-
   defp check_increased(item, acc) do
     [a, b] = item
     count = if a < b, do: 1, else: 0
@@ -15,8 +11,7 @@ defmodule Day01 do
 
   defp count_increased(measurements) do
     measurements
-    |> Enum.chunk_every(2, 1)
-    |> Enum.filter(&remove_falsy_items/1)
+    |> Enum.chunk_every(2, 1, :discard)
     |> Enum.reduce(0, &check_increased/2)
   end
 
