@@ -5,4 +5,9 @@ defmodule AOCUtils do
     contents
     |> String.split("\n", trim: true)
   end
+
+  def readInputFileAsIntegers(inputFile) do
+    readInputFile(inputFile)
+    |> Enum.map(&String.to_integer/1)
+  end
 end

@@ -1,37 +1,39 @@
 require AOCUtils
 
-defmodule DAY01 do
+defmodule Day01 do
   @path './files/input01.txt'
 
+  defp remove_falsy_items(x) do
+    Enum.count(x) > 1
+  end
+
   defp check_increased(item, acc) do
-    {accItem, accCounter} = acc
-    incremente = if item > accItem, do: 1, else: 0
-    {item, accCounter + incremente}
+    [a, b] = item
+    count = if a < b, do: 1, else: 0
+    acc + count
   end
 
   defp count_increased(measurements) do
-    {_, increased} =
-      measurements
-      |> Enum.reduce({nil, 0}, &check_increased/2)
-
-    increased
+    measurements
+    |> Enum.chunk_every(2, 1)
+    |> Enum.filter(&remove_falsy_items/1)
+    |> Enum.reduce(0, &check_increased/2)
   end
 
-  defp count_increased_sum_of_three(measurements) do
+  defp count_increased_three(measurements) do
     measurements
-    |> Enum.map(&String.to_integer/1)
     |> Enum.chunk_every(3, 1)
     |> Enum.map(&Enum.sum/1)
     |> count_increased
   end
 
   def solution1 do
-    AOCUtils.readInputFile(@path)
+    AOCUtils.readInputFileAsIntegers(@path)
     |> count_increased
   end
 
   def solution2 do
-    AOCUtils.readInputFile(@path)
-    |> count_increased_sum_of_three
+    AOCUtils.readInputFileAsIntegers(@path)
+    |> count_increased_three
   end
 end
