@@ -3,24 +3,14 @@ require AOCUtils
 defmodule Day02 do
   @path './files/input02-example.txt'
 
-  defp instruction(inst, name) do
-    [order, _] = inst
-    order === name
-  end
+  defp is_forward(command), do: "forward" in command
+  defp is_down(command), do: "down" in command
+  defp is_up(command), do: "up" in command
 
-  def value(x) do
-    [_, valor] = x
-    valor
-  end
-
-  defp forward(x), do: instruction(x, "forward")
-  defp down(x), do: instruction(x, "down")
-  defp up(x), do: instruction(x, "up")
-
-  defp values_from_command(list, command) do
+  defp values_from_command(list, is_command) do
     list
-    |> Enum.filter(command)
-    |> Enum.map(&value/1)
+    |> Enum.filter(is_command)
+    |> Enum.map(fn [_, value] -> value end)
     |> Enum.map(&String.to_integer/1)
     |> Enum.sum()
   end
@@ -30,9 +20,9 @@ defmodule Day02 do
       AOCUtils.readInputFile(@path)
       |> Enum.map(&String.split/1)
 
-    forward = values_from_command(input, &forward/1)
-    down = values_from_command(input, &down/1)
-    up = values_from_command(input, &up/1)
+    forward = values_from_command(input, &is_forward/1)
+    down = values_from_command(input, &is_down/1)
+    up = values_from_command(input, &is_up/1)
 
     forward * (down - up)
   end
