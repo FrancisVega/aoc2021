@@ -10,7 +10,7 @@ defmodule Day02 do
   defp values_from_command(list, is_command) do
     list
     |> Enum.filter(is_command)
-    |> Enum.map(fn [_, value] -> value end)
+    |> Enum.map(&Enum.at(&1, 1))
     |> Enum.map(&String.to_integer/1)
     |> Enum.sum()
   end
